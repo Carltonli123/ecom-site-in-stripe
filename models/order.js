@@ -22,7 +22,9 @@ var orderSchema = new mongoose.Schema({
 					mrp: Number,
 					price: Number,
 					disc_perc: Number,
-					discount: Number
+					discount: Number,
+				    stripe_price_id: String,
+	                stripe_product_id: String,
 				},
 				qty: Number
 			}

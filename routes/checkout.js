@@ -41,7 +41,9 @@ router.post("/checkout",isLoggedIn,function(req,res){
 							mrp: cartItem.product.mrp,
 							price: cartItem.product.price,
 							disc_perc: cartItem.product.disc_perc,
-							discount: cartItem.product.discount
+							discount: cartItem.product.discount,	
+							stripe_price_id: cartItem.product.stripe_price_id,
+							stripe_product_id: cartItem.product.stripe_product_id
 						},
 						qty: cartItem.qty
 					}

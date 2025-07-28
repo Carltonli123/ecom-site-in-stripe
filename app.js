@@ -17,7 +17,10 @@ const dotenv = require('dotenv');
 dotenv.config();
  		  
 var dbURL = process.env.DATABASEURL || 'mongodb://localhost:27017/apniDukaan';
-mongoose.connect(dbURL, {useNewUrlParser: true});
+mongoose.connect(dbURL, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true
+});
 
 app.set("view engine","ejs");
 app.use(express.static(__dirname + "/public"));
@@ -51,6 +54,10 @@ var reviewRoutes = require("./routes/review");
 var cartRoutes = require("./routes/cart");
 var checkoutRoutes = require("./routes/checkout");
 var orderRoutes = require("./routes/order");
+var paymentLink = require("./routes/paymentlink");
+var checkoutSession = require("./routes/checkoutsession");
+var paymentIntent = require("./routes/paymentintent");
+
 
 app.use(indexRoutes)
 app.use(productRoutes);
@@ -58,6 +65,13 @@ app.use(reviewRoutes);
 app.use(cartRoutes)
 app.use(checkoutRoutes);
 app.use(orderRoutes);
+app.use(paymentLink);
+app.use(checkoutSession);
+app.use(paymentIntent);
+
+app.get("/completed", function(req, res) {
+    res.render("orders/completed");
+});
 
 OrderCount.find({},function(err,orderCountObjects){
 	if(orderCountObjects.length==0) {

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <script>
+
+        // This is your test secret API key.
+const stripe = Stripe("pk_test_51Rh4ylR41iH2FLgR3nA7XLCGbTmgAmcctsCZ2Fyfacr7bgNHBiMldo08RY1nj5UUbPwjHzVpvG2Hnin3td4BzOfG00T44Ww48s");
+
+
+// Create a Checkout Session
+async function initialize(order) {
+
+    // show order information in console
+    console.log("order information:", order);   
+
+    var line_items = []
+
+    for (const item of order.checkoutCart.items) {
+             console.log("item:", item.product.stripe_price_id);
+             line_items.push({
+                 price: item.product.stripe_price_id,
+                 quantity: item.qty
+             });
+    }
+
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    const raw = JSON.stringify({
+                 ui_mode: 'embedded',
+                 line_items,
+                 mode: 'payment',
+                 return_url: 'http://localhost:3000/embededform/return.html?session_id={CHECKOUT_SESSION_ID}',
+                 payment_intent_data: {
+                     application_fee_amount: 500,
+                     transfer_data: {
+                         destination: 'acct_1RjKNTR1TrtJD0bV',
+                     },
+                 },
+    });
+
+    const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow"
+    };
+
+    fetch("http://localhost:3000/checkoutsession", requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+        console.log("this is the session result for embedded form : ");
+        console.log(JSON.parse(result));
+
+        const clientSecret = JSON.parse(result).session.client_secret;
+        console.log("client secret:", clientSecret);
+
+        stripe.initEmbeddedCheckout({
+           clientSecret,
+        }).then((checkout) => {
+            // Mount Checkout
+            checkout.mount('#checkout');
+        });
+
+    })
+    .catch((error) => console.error(error));
+
+}
+var thisOrder = JSON.parse('<%- JSON.stringify(order) %>');
+
+// Initialize the checkout session with the order data
+initialize(thisOrder);
+
+    </script>
+
+  </head>
+  <body>
+    <!-- Display a payment form -->
+      <div id="checkout">
+        <!-- Checkout will insert the payment form here -->
+      </div>
+  </body>
+</html>

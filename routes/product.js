@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var Product = require("../models/product");
 var User = require("../models/user");
+var request = require('request');
 
 router.get("/products",function(req,res){
 	Product.find({},function(err,products){
@@ -21,15 +22,62 @@ router.get("/products/new",isAdmin,function(req,res){
 router.post("/products",isAdmin,function(req,res){
 	req.body.product.discount = req.body.product.mrp-req.body.product.price;
 	req.body.product.disc_perc = Math.round(((req.body.product.mrp-req.body.product.price)*100)/req.body.product.mrp);
-	Product.create(req.body.product,function(err,product){
-		if(err){
-			req.flash("error","Something went wrong!!");
-			res.redirect("/products");
-		} else {
-			req.flash("success","Product added!!");
-			res.redirect("/products");
+
+	// create stripe product
+  
+	var options = {
+	'method': 'POST',
+	'url': 'https://api.stripe.com/v1/products',
+	'headers': {
+		'Content-Type': 'application/x-www-form-urlencoded',
+		'Authorization': 'Basic c2tfdGVzdF81MVJoNHlsUjQxaUgyRkxnUmZiOEFXUnhrZkJMUkpRak9kanIwUU9CU25WZDRhSUtYS2ZvbFBJSTJ2YlRNY3JwbmhsajFlQkNRRkExc1NrTU91UGttUDVKTjAwemZlOTltbVY6'
+	},
+	form: {
+		'name': req.body.product.name,
+		'images[0]': req.body.product.image,
+	}
+	};
+	request(options, function (error, response) {
+	if (error) throw new Error(error);
+	    console.log("the create product response: ", response.body);
+		req.body.product.stripe_product_id = JSON.parse(response.body).id;
+		console.log("the product id: ", JSON.parse(response.body).id);
+	    //create stripe price
+
+		var options2 = {
+		'method': 'POST',
+		'url': 'https://api.stripe.com/v1/prices',
+		'headers': {
+			'Content-Type': 'application/x-www-form-urlencoded',
+			'Authorization': 'Basic c2tfdGVzdF81MVJoNHlsUjQxaUgyRkxnUmZiOEFXUnhrZkJMUkpRak9kanIwUU9CU25WZDRhSUtYS2ZvbFBJSTJ2YlRNY3JwbmhsajFlQkNRRkExc1NrTU91UGttUDVKTjAwemZlOTltbVY6'
+		},
+		form: {
+			'currency': 'usd',
+			'unit_amount': req.body.product.price * 100, // Stripe expects the amount in cents
+			'product': req.body.product.stripe_product_id
 		}
+		};
+		request(options2, function (error, response) {
+			if (error) throw new Error(error);
+			console.log("the create price response: ", response.body);
+            req.body.product.stripe_price_id = JSON.parse(response.body).id;
+
+			console.log("product after modification: ", req.body.product);
+			Product.create(req.body.product,function(err,product){
+				if(err){
+					req.flash("error","Something went wrong!!");
+					res.redirect("/products");
+				} else {
+					req.flash("success","Product added!!");
+					res.redirect("/products");
+				}
+			});
+
+		});
+
 	});
+
+
 });
 
 router.get("/products/:id",function(req,res){

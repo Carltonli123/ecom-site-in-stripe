@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Buy cool new product</title>
+
+    <style>
+      /* Add any custom styles for the hosted checkout page here */
+      button {
+        height: 36px;
+        background: #556cd6;
+        color: white;
+
+        font-size: 14px;
+        border: 0;
+        font-weight: 500;
+        cursor: pointer;
+        letter-spacing: 0.6;
+        border-radius: 0 0 6px 6px;
+        transition: all 0.2s ease;
+        box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
+        }
+        button:hover {
+        opacity: 0.8;
+      }
+
+    </style>
+    <script src="https://js.stripe.com/basil/stripe.js"></script>
+  </head>
+  <body>
+    <section>
+
+    
+        <button type="submit" id="checkout-button" onclick="createHostedCheckout(JSON.parse('<%= JSON.stringify(order) %>'))">Checkout</button>
+ 
+    </section>
+  </body>
+</html>

@@ -1,5 +1,48 @@
 <%- include("../partials/header") %>
 
+<script src="https://js.stripe.com/basil/stripe.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const options = document.querySelectorAll('input[name="checkout-option"]');
+  const divs = {
+    paymentlink: document.getElementById('paymentlink-div'),
+    hostedcheckout: document.getElementById('hostedcheckout-div'),
+    embededform: document.getElementById('embededform-div'),
+    embededcomponent: document.getElementById('embededcomponent-div'),
+	advancedintegration: document.getElementById('advancedintegration-div')
+  };
+
+  function updateVisibility(selected) {
+    for (const key in divs) {
+      if (selected === key) {
+        divs[key].removeAttribute('hidden');
+      } else {
+        divs[key].setAttribute('hidden', true);
+      }
+    }
+    if (selected === 'none') {
+      for (const key in divs) {
+        divs[key].setAttribute('hidden', true);
+      }
+    }
+  }
+
+  options.forEach(option => {
+    option.addEventListener('change', function() {
+      updateVisibility(this.value);
+    });
+  });
+
+  // Initialize with "none"
+  updateVisibility('none');
+});
+</script>
+<style>
+.option-section label {
+  margin-right: 1.5rem;
+  font-weight: 500;
+}
+</style>
 <div class="container ord-show-div">
 	<div class="row">
 		<div class="col-md-7">
@@ -52,6 +95,49 @@
 			</div>
 		</div>
 	</div>
+	<div></div>
+
+	<!-- Option Section for Payment Methods -->
+	<div class="option-section mb-4">
+	<label><input type="radio" name="checkout-option" value="none" checked> None</label>
+	<label><input type="radio" name="checkout-option" value="paymentlink"> Payment Link</label>
+	<label><input type="radio" name="checkout-option" value="hostedcheckout"> Hosted Checkout</label>
+	<label><input type="radio" name="checkout-option" value="embededform"> Embedded Form</label>
+	<label><input type="radio" name="checkout-option" value="embededcomponent"> Embedded Component</label>
+	<label><input type="radio" name="checkout-option" value="advancedintegration"> Advanced</label>
+	</div>
+
+	<!-- Create a Payment Link -->
+	<div id="paymentlink-div" hidden>
+       <%- include("../stripe-partials/paymentlinkbutton") %>
+	</div>
+	<!-- End -->
+
+	<!-- Create a Checkout Session -->
+	 <div id="hostedcheckout-div" hidden>
+		<%- include("../stripe-partials/hostedcheckout") %>
+	 </div>
+    <!-- End -->
+
+	<!-- Create an Embedded Checkout Form -->
+	<div id="embededform-div" hidden>
+		<%- include("../stripe-partials/embededform") %>
+	</div>
+	<!-- End -->
+
+	<!-- Create an Embedded Component-->
+	<div id="embededcomponent-div" hidden>
+		<%- include("../stripe-partials/embededcomponent") %>		
+	</div>
+	<!-- End -->
+
+
+    <!-- Create an Advanced Integration -->
+	<div id="advancedintegration-div" hidden>
+		<%- include("../stripe-partials/advancedintegration") %>
+	</div>
+	<!-- End -->
+
 </div>
 
 <%- include("../partials/footer") %>

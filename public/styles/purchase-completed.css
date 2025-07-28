@@ -1,0 +1,67 @@
+/* styles/purchase-completed.css */
+body {
+  background: linear-gradient(120deg, #e0ffe9 0%, #f9f9f9 100%);
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.purchase-success-container {
+  background: #fff;
+  padding: 2.5rem 2rem;
+  border-radius: 18px;
+  box-shadow: 0 6px 32px rgba(67, 233, 123, 0.10);
+  text-align: center;
+  max-width: 350px;
+  width: 100%;
+}
+
+.checkmark-circle {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.2rem auto;
+  box-shadow: 0 4px 16px rgba(67, 233, 123, 0.18);
+}
+
+.checkmark {
+  color: #fff;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+h1 {
+  margin: 0 0 0.5rem 0;
+  color: #222;
+  font-size: 2rem;
+}
+
+p {
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.success-btn {
+  display: inline-block;
+  background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+  color: #fff;
+  padding: 0.75rem 2rem;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background 0.3s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(67, 233, 123, 0.15);
+}
+
+.success-btn:hover {
+  background: linear-gradient(90deg, #38f9d7 0%, #43e97b 100%);
+  box-shadow: 0 4px 16px rgba(67, 233, 123, 0.20);
+}

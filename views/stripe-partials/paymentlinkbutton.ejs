@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Page</title>
+    <!-- Include CSS file -->
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/script.js"></script>
+</head>
+<body>
+
+   <!-- Place this where you want the Buy button to appear -->
+    <button class="buy-btn" onclick="createPaymentLink(JSON.parse('<%= JSON.stringify(order) %>'))">Buy Now</button>
+    
+
+</body>
+</html>
