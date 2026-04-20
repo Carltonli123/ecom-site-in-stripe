@@ -36,7 +36,7 @@
 				   })) { %>
 							<a href="/cart"><button class="btn btn-primary mr-2">Go to cart</button></a>
 				<% } else { %>
-							<a href="/cart/new/<%= product._id %>/show"><button class="btn btn-primary mr-2">Add to cart</button></a>
+							<a href="/cart/new/<%= product._id %>/show"><button class="btn btn-primary mr-2" onclick="_tfa.push({notify:'event',name:'add_to_cart',id:'1742144'});">Add to cart</button></a>
 				<% } %>
 				<span class="disc nowrap">Save $<%= product.discount %></span>
 			</h6>

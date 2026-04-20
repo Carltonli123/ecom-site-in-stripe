@@ -31,7 +31,7 @@
 							   })) { %>
 										<a href="/cart"><button class="btn btn-sm btn-primary mr-md-1">Go to cart</button></a>
 							<% } else { %>
-										<a href="/cart/new/<%= product._id %>/index"><button class="btn btn-sm btn-primary mr-md-1">Add to cart</button></a>
+										<a href="/cart/new/<%= product._id %>/index"><button class="btn btn-sm btn-primary mr-md-1" onclick="_tfa.push({notify:'event',name:'add_to_cart',id:'1742144'});">Add to cart</button></a>
 							<% } %>
 							<span class="nowrap disc">Save $<%= product.discount %></span>
 						</h6>						
